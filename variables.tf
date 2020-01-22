@@ -1,20 +1,20 @@
 # vnet variables
 
 variable "subscription" {
-  description = "the azure subscription"
-  type        = "string"
+  description = "The azure subscription"
+  type        = string
   default     = ""
 }
 
 variable "location" {
   description = "One of the Azure region for the resource provisioning"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "resource_group_name" {
   description = "Resource groupe name tha will contain various resources"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
@@ -30,7 +30,6 @@ variable "rules" {
 
 variable "network_security_group_names" {
   description = "nsg names ti which the rule will be associated"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
-
