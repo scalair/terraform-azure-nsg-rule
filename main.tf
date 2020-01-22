@@ -1,15 +1,25 @@
 resource "azurerm_network_security_rule" "rule" {
-  count = "${length(var.rules) * length(var.network_security_group_names)}"
-  name                        = "${element(split(",",var.rules[count.index % length(var.rules)]),0)}"
-  priority                    = "${element(split(",",var.rules[count.index % length(var.rules)]),1)}"
-  direction                   = "${element(split(",",var.rules[count.index % length(var.rules)]),2)}"
-  access                      = "${element(split(",",var.rules[count.index % length(var.rules)]),3)}"
-  protocol                    = "${element(split(",",var.rules[count.index % length(var.rules)]),4)}"
-  source_port_range           = "${element(split(",",var.rules[count.index % length(var.rules)]),5)}"
-  destination_port_ranges      = "${element(split(",",var.rules[count.index % length(var.rules)]),6)}"
-  source_address_prefix       = "${element(split(",",var.rules[count.index % length(var.rules)]),7)}"
-  destination_address_prefix  = "${element(split(",",var.rules[count.index % length(var.rules)]),8)}"
-  resource_group_name         = "${var.resource_group_name}"
-  #network_security_group_name = "${var.network_security_group_names[(count.index) / length(var.rules)]}" # terraform 0.11
-  network_security_group_name = "${var.network_security_group_names[floor((count.index) / length(var.rules))]}" ## terraform 0.12
+    for_each = var.rules  // map of objects
+        name                       = each.value.name
+        priority                   = each.value.priority
+        direction                  = each.value.direction
+        access                     = each.value.access
+        protocol                   = each.value.protocol
+
+        source_port_range          = each.value.source_port_range
+        source_port_ranges         = each.value.source_port_ranges[0] == "" ? null : each.value.source_port_ranges
+
+        destination_port_range     = each.value.destination_port_range
+        destination_port_ranges    = each.value.destination_port_ranges[0] == "" ? null : each.value.destination_port_ranges
+
+        source_address_prefix      = each.value.source_address_prefix
+        source_address_prefixes    = each.value.source_address_prefixes[0] == "" ? null : each.value.source_address_prefixes
+
+        destination_address_prefix   = each.value.destination_address_prefix
+        destination_address_prefixes = each.value.destination_address_prefixes[0] == "" ? null : each.value.destination_address_prefixes
+
+
+        resource_group_name          = var.resource_group_name
+        network_security_group_name  = var.network_security_group_names
 }
+
