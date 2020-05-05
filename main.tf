@@ -20,6 +20,6 @@ resource "azurerm_network_security_rule" "rule" {
 
 
         resource_group_name          = var.resource_group_name
-        network_security_group_name  = var.network_security_group_names
+        network_security_group_name  = basename(var.network_security_group_name)
 }
 
