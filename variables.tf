@@ -45,7 +45,7 @@ variable "rules" {
   }))
 }
 
-variable "network_security_group_names" {
+variable "network_security_group_name" {
   description = "nsg names ti which the rule will be associated"
   type        = string
   default     = ""
